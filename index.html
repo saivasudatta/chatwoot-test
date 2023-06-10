@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test App</title>
+</head>
+<body>
+  <div id="app">
+    <div>Test App</div>
+    <code>
+      <pre id="eventData">
+        { "name": "Test" }
+      </pre>
+    </code>
+    <button onclick="getData()">
+      Get Data from Chatwoot
+    </button>
+  </div>
+  
+  <script>
+    function getData() {
+      window.parent.postMessage("chatwoot-dashboard-app:fetch-info", "*");
+    }
+
+    window.addEventListener("DOMContentLoaded", function () {
+      window.addEventListener("message", function (event) {
+        const chatwootEvent = event.data;
+        if (JSON.parse(chatwootEvent)) {
+          const eventDataElem = document.getElementById("eventData");
+          eventDataElem.innerHTML = JSON.stringify(JSON.parse(chatwootEvent), null, 2);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
